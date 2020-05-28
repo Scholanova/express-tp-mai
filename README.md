@@ -1,8 +1,8 @@
 # PROJET EXPRESS NODE.JS MAI
 
 Nom du binôme :
- - GOMES NICOLAS
- - VUILLEMIN CYRIL
+ - GOMES NICOLAS le moche
+ - VUILLEMIN CYRIL le plus fort
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
