@@ -66,3 +66,4 @@ typings/
 
 # system
 .DS_Store
+config/config.js
