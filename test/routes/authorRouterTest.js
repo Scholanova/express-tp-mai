@@ -64,6 +64,53 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`${author.name} (${author.pseudo})`)
       })
     })
+
+    context('when there are pseudos in the repository', () => {
+
+      let author
+      beforeEach(async () => {
+        // given
+        author = factory.createAuthor()
+        authorRepository.listAll.resolves([author])
+
+        // when
+        response = await request(app).get('/authors')
+      })
+
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+
+      it('should return an html list with author info inside', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.contain(`(${author.pseudo})`)
+      })
+    })
+    context('when there are pseudos in the repository', () => {
+
+      let author
+      beforeEach(async () => {
+        // given
+        author = factory.createAuthor({pseudo: null})
+        authorRepository.listAll.resolves([author])
+
+        // when
+        response = await request(app).get('/authors')
+      })
+
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+
+      it('should return an html list with author info inside but not pseudo', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.not.contain(`(${author.pseudo})`)
+      })
+    })
   })
   
   describe('show', () => {
