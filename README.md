@@ -179,3 +179,17 @@ return Pet.findAll({ where: { personId: id } })
 En se connectant au terminal distant du server de la base de donnée postgres, on peut récupérer
 des informations sur le schéma exact d'une table donnée en entrant la commande suivante:
 `$ \d "<nom de la table>"` 
+
+## AIDE POUR EFFECTUER UNE REQUÊTE DELETE
+
+Les requêtes HTTP du type `DELETE` ne sont pas permises au travers d'un formulaire html. 
+Cependant, il est possible de les faire au travers d'un peu de javascript, comme suit :
+
+```html
+<button onclick = "deleteAuthorById(<%= author.id %>)" %> > Delete </button>
+<script>
+function deleteAuthorById (authorId) {
+  fetch(`/authors/${authorId}`, { method: 'DELETE' })
+}
+</script>
+```
