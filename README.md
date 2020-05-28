@@ -2,7 +2,7 @@
 
 Nom du binôme :
  - Michel Aurélien
- - XXXXXXX XXXXXXX
+ - Diard Loic
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
