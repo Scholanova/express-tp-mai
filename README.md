@@ -2,6 +2,7 @@
 
 Nom du binôme :
  - Djibril Diop
+ - Elimane Sene
  - XXXXXXX XXXXXXX
 
 ## CONSIGNES GÉNÉRALES  
