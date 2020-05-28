@@ -5,13 +5,14 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
-    "test": "NODE_ENV=test mocha --recursive",
+    "test": "set NODE_ENV=test&& mocha --recursive",
+    "test:windows": "SET NODE_ENV=test&& mocha --recursive",
     "db:init": "npx sequelize db:create",
     "db:migrate": "npx sequelize db:migrate",
     "db:seed": "npx sequelize db:seed:all",
     "db:reset": "npx sequelize db:drop && npm run db:init && npm run db:migrate",
-    "db:test:init": "NODE_ENV=test npx sequelize db:create",
-    "db:test:reset": "NODE_ENV=test npx sequelize db:drop && npm run db:test:init"
+    "db:test:init": "set NODE_ENV=test&& npx sequelize db:create",
+    "db:test:reset": "set NODE_ENV=test&& npx sequelize db:drop && npm run db:test:init"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
