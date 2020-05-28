@@ -2,7 +2,7 @@
 
 Nom du binôme :
  - Pauwels Paul
- - XXXXXXX XXXXXXX
+ - Chan-Tung Livio
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
