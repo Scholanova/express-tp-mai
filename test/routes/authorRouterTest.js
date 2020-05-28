@@ -207,6 +207,52 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`${book2.title}`)
       })
     })
+
+    context('when there is an author matching in the repository without pseudo', () => {
+
+      let author
+
+      beforeEach(async () => {
+        // given
+        authorId = '123'
+        author = factory.createAuthor({ id: authorId, pseudo: null })
+
+        authorRepository.get.resolves(author)
+        bookRepository.listForAuthor.resolves([])
+
+        // when
+        response = await request(app).get(`/authors/${authorId}`)
+      })
+
+      it('should call the author repository with id', () => {
+        // then
+        expect(authorRepository.get).to.have.been.calledWith(authorId)
+      })
+
+      it('should call the book repository with author id', () => {
+        // then
+        expect(bookRepository.listForAuthor).to.have.been.calledWith(authorId)
+      })
+
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+
+      it('should return the show page with the author’s info', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.contain(`Author ${author.name}`)
+        expect(response.text).to.contain(`Name: ${author.name}`)
+        expect(response.text).to.contain(`Email: ${author.email}`)
+        expect(response.text).to.contain(`Language: ${author.language}`)
+      })
+
+      it('should return the show page without showing `Pseudo:` ', () => {
+        // then
+        expect(response.text).to.not.contain(`Pseudo:`)
+      })
+    })
   })
 
   describe('new - POST', () => {
