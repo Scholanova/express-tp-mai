@@ -1,8 +1,8 @@
 # PROJET EXPRESS NODE.JS MAI
 
 Nom du binôme :
- - François Gros
- - Benoit Jeric
+ - François Godin
+ - XXXXX XXXXX
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
