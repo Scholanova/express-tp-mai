@@ -2,7 +2,7 @@
 
 Nom du binôme :
  - GOMES NICOLAS le BG
- - VUILLEMIN CYRIL le moche
+ - VUILLEMIN CYRIL le BG
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
