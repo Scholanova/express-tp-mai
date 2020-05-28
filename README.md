@@ -1,8 +1,8 @@
 # PROJET EXPRESS NODE.JS MAI
 
 Nom du binôme :
- - Pauwels Paul
- - Chan-tung Livio
+ - XXXXXXX XXXXXXX
+ - XXXXXXX XXXXXXX
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
