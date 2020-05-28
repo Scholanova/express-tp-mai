@@ -60,8 +60,7 @@ il faudrait que la ligne ne s'affiche pas. Lorsque l'auteur a un pseudo, rien ne
 ## PARTIE 2 - UN PEU PLUS GROS 
 - Étape 3 - Sur la page de détail d'un auteur, on doit pouvoir supprimer un auteur. 
 Il faut un bouton avec écrit `Delete author` et le positionner après la langue et avant la liste des livres.
-Normalement il faut créer une route `DELETE /authors/:id` et un formulaire avec comme seul élément visible dans la page 
-le dit-bouton, qui avec la méthode `formmethod` est mis à `DELETE` (documentation [ici](https://developer.mozilla.org/fr/docs/Web/HTML/Element/button#attr-formmethod))
+Normalement il faut créer une route `DELETE /authors/:id` et un bouton qui appelle cette route (voir l'aide plus bas dans ce readme)
 Ne pas oublier que durant la suppression d'un auteur, il faut supprimer aussi ses livres, ce qui peut être fait soit par un service, 
 soit par le repository, il n'y a pas de règles métier particulières. On revient sur la page de liste des auteurs après la suppression.
 - Étape 4 - Sur la page de détail d'un auteur, on doit pouvoir supprimer un de ses livres.
@@ -70,6 +69,27 @@ façon de faire. À la fin de la suppression on revient sur la page de détail d
 
 Ne pas oublier durant les relectures de bien faire en sorte que les deux façons de faire soient homogènes.
 
+## PARTIE 3 - LES CHOSES SÉRIEUSES
+Cette étape est conçue pour qu'il y ait des conflits. N'hésitez pas à communiquer à l'avance avec votre binôme sur
+l'architecture de la solution et pour l'ordre de fusion des branches. 
+
+- Étape 5 - Rajouter une règle qui empêche un auteur d'avoir plus de 5 livres différents.
+    - C'est une règle de validation à mettre au niveau du service.
+    - L'erreur doit apparaître au niveau du formulaire de création de livre.
+- Étape 6 - Rajouter une règle qui empêche un auteur deux fois un livre avec le même titre.
+    - C'est une règle de validation à mettre au niveau du service.
+    - L'erreur doit apparaître au niveau du formulaire de création de livre.
+    
+## PARTIE 4 - TRAVAIL SUR LA BASE DE DONNÉE
+- Étape 7 - Rajouter une page qui affiche tous les livres écrits dans une certaine langue
+ (c'est-à-dire dont l'auteur écrit dans la langue en question).
+    - Il faut mettre en place une règle au niveau du service pour remonter une erreur si la langue n'est pas `french` ou `english`
+    - Le repository devra faire un inner-join pour remonter les livres en question.
+    - Il faut qu'il y ait une page à part (/books/filter) avec un formulaire pour renseigner la langue.
+- Étape 8 - Rajouter l'information de nombre de pages sur un livre.
+    - Cette information est obligatoire et un nombre entier strictement supérieur à zéro.
+    - Il faut penser à faire une migration avec un nombre par défaut pour les livres existants en base de donnée.
+    - Cette information doit être affichée au niveau du titre de l'ouvrage dans la page de détail d'un auteur.
 
 ## AIDE POUR LA MIGRATION DE BASE DE DONNÉES
 
