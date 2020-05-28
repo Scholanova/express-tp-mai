@@ -61,7 +61,7 @@ describe('authorRouter', () => {
       it('should return an html list with author info inside', () => {
         // then
         expect(response).to.be.html
-        expect(response.text).to.contain(`${author.name} (${author.pseudo})`)
+        expect(response.text).to.contain(`${author.name} ${author.pseudo}`)
       })
     })
   })
