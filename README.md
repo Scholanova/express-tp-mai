@@ -1,8 +1,8 @@
 # PROJET EXPRESS NODE.JS MAI
 
 Nom du binôme :
- - XXXXXXX XXXXXXX
- - XXXXXXX XXXXXXX
+ - KASA Noblesse
+ - DIARRA Dieneba
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
