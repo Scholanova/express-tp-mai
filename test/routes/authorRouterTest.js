@@ -93,7 +93,7 @@ describe('authorRouter', () => {
       let author
       beforeEach(async () => {
         // given
-        author = factory.createAuthorNoPseudo()
+        author = factory.createAuthor({pseudo: null})
         authorRepository.listAll.resolves([author])
 
         // when
