@@ -637,7 +637,7 @@ describe('authorRouter', () => {
         expect(response).to.be.html
         expect(response.text).to.contain(`Create a new book for ${authorName}`)
         expect(response.text).to.contain('&#34;title&#34; is required')
-        expect(response.text).to.contain(bookTitle)
+        expect(response.text).to.contain(bookTitle) 
       })
     })
   })
