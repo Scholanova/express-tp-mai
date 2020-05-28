@@ -232,6 +232,36 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`${book2.title}`)
       })
     })
+    context('when the author has no pseudo', () => {
+
+      let author, book1, book2
+
+      beforeEach(async () => {
+        // given
+        authorId = '123'
+        authorPseudo = null
+        author = factory.createAuthor({ id: authorId, pseudo: authorPseudo })
+        book1 = factory.createBook({ title: 'Book1', authorId: authorId })
+        book2 = factory.createBook({ title: 'Book2', authorId: authorId })
+
+        authorRepository.get.resolves(author)
+        bookRepository.listForAuthor.resolves([book1, book2])
+
+        // when
+        response = await request(app).get(`/authors/${authorId}`)
+      })
+
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+
+      it('should return an html list with author info inside without Pseudo', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.not.contain(`Pseudo`)
+      })
+    })
   })
 
   describe('new - POST', () => {
