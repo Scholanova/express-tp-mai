@@ -2,7 +2,7 @@
 
 Nom du binôme :
  - YELES NACER
- - XXXXXXX XXXXXXX
+ - DAOUDA FOFANA
 
 ## CONSIGNES GÉNÉRALES  
 Le projet correspondant aux cours du 28 et 29 mai 2020. 
