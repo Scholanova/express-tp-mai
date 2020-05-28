@@ -1,7 +1,7 @@
 # PROJET EXPRESS NODE.JS MAI
 
 Nom du binôme :
- - François Gros
+ - XXX XXXX
  - Benoit Jeric
 
 ## CONSIGNES GÉNÉRALES  
