@@ -64,6 +64,30 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`${author.name} (${author.pseudo})`)
       })
     })
+
+    context('when there are authors in the repository', () => {
+
+      let author
+      beforeEach(async () => {
+        // given
+        author = factory.createAuthorWithoutPseudo()
+        authorRepository.listAll.resolves([author])
+
+        // when
+        response = await request(app).get('/authors')
+      })
+
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+
+      it('should return an html list with author info inside', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.contain(`${author.name}`)
+      })
+    })
   })
 
   describe('show', () => {
@@ -205,6 +229,43 @@ describe('authorRouter', () => {
         expect(response).to.be.html
         expect(response.text).to.contain(`${book1.title}`)
         expect(response.text).to.contain(`${book2.title}`)
+      })
+    })
+
+    context('when there is a author matching in the repository with no pseudo', () => {
+
+      let author
+  
+      beforeEach(async () => {
+        // given
+        authorId = '123'
+        author = factory.createAuthorWithoutPseudo({ id: authorId })
+        book1 = factory.createBook({ title: 'Book1', authorId: authorId })
+  
+        authorRepository.get.resolves(author)
+        bookRepository.listForAuthor.resolves([book1])
+  
+        // when
+        response = await request(app).get(`/authors/${authorId}`)
+      })
+  
+      it('should call the author repository with id', () => {
+        // then
+        expect(authorRepository.get).to.have.been.calledWith(authorId)
+      })
+  
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+  
+      it('should return the show page with the author’s info without pseudo', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.contain(`Author ${author.name}`)
+        expect(response.text).to.contain(`Name: ${author.name}`)
+        expect(response.text).to.contain(`Email: ${author.email}`)
+        expect(response.text).to.contain(`Language: ${author.language}`)
       })
     })
   })
