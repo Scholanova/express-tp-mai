@@ -1,7 +1,7 @@
 # PROJET EXPRESS NODE.JS MAI
 
 Nom du binôme :
- - XXXXXXX XXXXXXX
+ - Eva Sobaco-Morison
  - XXXXXXX XXXXXXX
 
 ## CONSIGNES GÉNÉRALES  
