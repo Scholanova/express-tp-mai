@@ -20,6 +20,15 @@ const factory = {
   } = {}) => {
     return new Author({ id, name, pseudo, email, language })
   },
+  createAuthorNoPseudo: ({
+    id = 756,
+    name = 'Jean-Jacques Rousseau',
+    pseudo = '',
+    email = 'jj@rousseau.ch',
+    language = 'french'
+  } = {}) => {
+    return new Author({ id, name, pseudo, email, language })
+  },
   createBookData: ({
     title = 'La Profession de foi du vicaire savoyard',
     authorId = 231
