@@ -734,4 +734,43 @@ describe('authorRouter', () => {
       })
     })
   })
+
+  describe('delete author - DELETE', () =>{
+    let response
+    
+    beforeEach(() => {
+      sinon.stub(authorRepository, 'delete')
+    })
+    
+    context('when the author exists', () => {
+      
+      let authorId
+      
+      beforeEach(async () => {
+        // given
+        bookTitle = 'Germinal'
+        authorId = '213'
+        author = factory.createAuthor({id: authorId})
+        book = factory.createBook({ title: bookTitle, authorId })
+        
+        authorRepository.delete.resolves(author)
+        
+        // when
+        response = await request(app)
+        .delete(`/authors/${authorId}`)
+        .type('form')
+        .redirects(0)
+      })
+      
+      it('should call the repository with author id and book data', () => {
+        // then
+        expect(authorRepository.delete).to.have.been.calledWith(authorId)
+      })
+      
+      it('should succeed with a status 302', () => {
+        // then
+        expect(response).to.have.status(204)
+      })
+    })
+  })
 })
