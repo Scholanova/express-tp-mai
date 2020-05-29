@@ -167,4 +167,23 @@ describe('authorRepository', () => {
       })
     })
   })
+
+  describe('delete', () => {
+
+    let id
+    let authorToDelete
+    let authorData
+    beforeEach(async () => {
+      // given
+      authorData = factory.createAuthorData()
+      authorToDelete = await authorRepository.create(authorData)
+      id = authorToDelete.id
+      // when
+      await authorRepository.delete(id)
+    })
+    // then
+    it('should return no author', () => {
+      expect(Author.findOne({ where: { id } })).to.be.eventually.null
+    })
+  })
 })
