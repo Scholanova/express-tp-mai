@@ -167,4 +167,29 @@ describe('authorRepository', () => {
       })
     })
   })
+
+  describe('delete', () => {
+
+    let createdAuthor
+    let authorData
+
+    context('when there is an authors in the repository', () => {
+      beforeEach(async () => {
+        // given
+        authorData = factory.createAuthorData()
+        createdAuthor = await authorRepository.create(authorData)
+
+        // when
+        await authorRepository.delete(createdAuthor.id)
+      })
+
+      it('should return a resource not found', () => {
+        // then
+        return expect(authorRepository.get(createdAuthor.id)).to.eventually.be.rejectedWith(ResourceNotFoundError)
+      })
+    })
+
+  })
+
+  
 })
