@@ -30,7 +30,6 @@ describe('bookService', () => {
         bookCreationPromise = bookService.create(bookData)
       })
       
-      // then
       it('should call the book Repository with the creation data', async () => {
         // then
         await bookCreationPromise.catch(() => {})
@@ -72,6 +71,70 @@ describe('bookService', () => {
         .with.deep.property('details', expectedErrorDetails)
       })
     })
+    
+    context('when the book title already exists for this author', () => {
+      
+      let authorId = 123
+      let bookData2
+      
+      beforeEach(async () => {
+        
+        sinon.stub(bookRepository, 'listForAuthor')
+        
+        // given
+        // author = factory.createAuthor()
+        
+        // await author.save()
+        
+        // authorId = author.id
+        // console.log(authorId )
+        
+        book1 = factory.createBook({title: "toto a la plage", authorId})
+        // await book1.save()
+        
+        bookData2 = factory.createBookData({title: "toto a la plage", authorId})
+        
+        bookRepository.listForAuthor.resolves([book1])
+        
+        // when
+        bookCreationPromise = bookService.create(bookData2)
+      })
+      
+      it('should call the book Repository', async () => {
+        // then
+        await bookCreationPromise.catch(() => {})
+        expect(bookRepository.listForAuthor).to.have.been.calledWith(authorId)
+      })
+      it('should reject with a ValidationError error about duplicate title', () => {
+        // then
+        const expectedErrorDetails = [{
+          "context": {
+            "dupePos": 0,
+            "dupeValue": {
+              "authorId": 123,
+              "id": 756,
+              "title": "toto a la plage"
+            },
+            "key": 1,
+            "label": "[1]",
+            "path": "title",
+            "pos": 1,
+            "value": {
+              "authorId": 123,
+              "title": "toto a la plage"
+            }
+          },
+          message: 'Duplicated book',
+          path: ['title'],
+          type: "array.unique"
+        }]
+        
+        return expect(bookCreationPromise)
+        .to.eventually.be.rejectedWith(Joi.ValidationError)
+        .with.deep.property('details', expectedErrorDetails)
+      })
+    })
+    
     
     context('when the book title is empty', () => {
       
