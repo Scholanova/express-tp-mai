@@ -182,10 +182,9 @@ describe('authorRepository', () => {
       authorToDelete = await authorRepository.create(authorData)
       id = authorToDelete.id
       bookData = factory.createBookData()
-      bookToDelete.authorId = id
+      bookData.authorId = id
       bookToDelete = await bookRepository.create(bookData)
       idBook = bookToDelete.id
-      bookId = author
       // when
       await authorRepository.delete(id)
     })
