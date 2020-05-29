@@ -47,8 +47,8 @@ describe('authorRouter', () => {
       beforeEach(async () => {
         // given
         author = factory.createAuthor()
+ author = factory.createAuthor({pseudo: null})
         authorRepository.listAll.resolves([author])
-
         // when
         response = await request(app).get('/authors')
       })
@@ -207,7 +207,53 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`${book2.title}`)
       })
     })
+     context('when there is a author matching in the repository with no pseudo', () => {
+
+      let author
+
+      beforeEach(async () => {
+        // given
+        authorId = '123'
+        author = factory.createAuthor({ id: authorId, pseudo: null })
+
+        authorRepository.get.resolves(author)
+        bookRepository.listForAuthor.resolves([])
+
+        // when
+        response = await request(app).get(`/authors/${authorId}`)
+      })
+
+      it('should call the author repository with id', () => {
+        // then
+        expect(authorRepository.get).to.have.been.calledWith(authorId)
+      })
+
+      it('should call the book repository with author id', () => {
+        // then
+        expect(bookRepository.listForAuthor).to.have.been.calledWith(authorId)
+      })
+
+      it('should succeed with a status 200', () => {
+        // then
+        expect(response).to.have.status(200)
+      })
+
+      it('should return the show page with the author’s info', () => {
+        // then
+        expect(response).to.be.html
+        expect(response.text).to.contain(`Author ${author.name}`)
+        expect(response.text).to.contain(`Name: ${author.name}`)
+        expect(response.text).to.contain(`Email: ${author.email}`)
+        expect(response.text).to.contain(`Language: ${author.language}`)
+      })
+
+      it('should return the show page without showing `Pseudo:` ', () => {
+        // then
+        expect(response.text).to.not.contain(`Pseudo:`)
+      })
+    })
   })
+  
 
   describe('new - POST', () => {
 
@@ -242,10 +288,10 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post('/authors/new')
-          .type('form')
-          .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': authorEmail, 'language': authorLanguage })
-          .redirects(0)
+         .post('/authors/new')
+        .type('form')
+        .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': authorEmail, 'language': authorLanguage })
+        .redirects(0)
       })
 
       it('should call the service with author data', () => {
@@ -296,11 +342,10 @@ describe('authorRouter', () => {
         authorLanguage = 'french'
 
         // when
-        response = await request(app)
-          .post('/authors/new')
-          .type('form')
-          .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': undefined, 'language': authorLanguage })
-          .redirects(0)
+        .post('/authors/new')
+        .type('form')
+        .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': undefined, 'language': authorLanguage })
+        .redirects(0)
       })
 
       it('should call the service with author data', () => {
@@ -351,9 +396,9 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post('/authors/filter')
-          .type('form')
-          .send({ 'language': filterLanguage })
+         .post('/authors/filter')
+        .type('form')
+        .send({ 'language': filterLanguage })
       })
 
       it('should call the service with language to filter upon', () => {
@@ -387,8 +432,8 @@ describe('authorRouter', () => {
         // when
         response = await request(app)
           .post('/authors/filter')
-          .type('form')
-          .send({ 'language': filterLanguage })
+        .type('form')
+        .send({ 'language': filterLanguage })
       })
 
       it('should call the service with language to filter upon', () => {
@@ -426,9 +471,9 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post('/authors/filter')
-          .type('form')
-          .send({ 'language': filterLanguage })
+                .post('/authors/filter')
+        .type('form')
+        .send({ 'language': filterLanguage })
       })
 
       it('should call the service with language to filter upon', () => {
@@ -547,10 +592,10 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post(`/authors/${authorId}/books/new`)
-          .type('form')
-          .send({ 'title': bookTitle })
-          .redirects(0)
+            .post(`/authors/${authorId}/books/new`)
+        .type('form')
+        .send({ 'title': bookTitle })
+        .redirects(0)
       })
 
       it('should call the service with author id and book data', () => {
@@ -609,9 +654,9 @@ describe('authorRouter', () => {
         // when
         response = await request(app)
           .post(`/authors/${authorId}/books/new`)
-          .type('form')
-          .send({ 'title': bookTitle })
-          .redirects(0)
+        .type('form')
+        .send({ 'title': bookTitle })
+        .redirects(0)
       })
 
       it('should call the service with author data', () => {
