@@ -62,16 +62,6 @@ describe('authorRepository', () => {
     })
   })
 
-
-
-
-
-
-
-
-
-
-
   describe('delete', () => {
 
     let deletedAuthor
