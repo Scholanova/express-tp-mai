@@ -1,10 +1,11 @@
 const { expect, factory } = require('../testHelper')
 
 const authorRepository = require('../../lib/repositories/authorRepository')
+const bookRepository = require('../../lib/repositories/bookRepository')
 const models = require('../../lib/models')
 const { ResourceNotFoundError } = require('../../lib/errors')
 const Author = models.Author
-
+const Book = models.Book
 describe('authorRepository', () => {
 
   afterEach(async () => {
@@ -173,17 +174,28 @@ describe('authorRepository', () => {
     let id
     let authorToDelete
     let authorData
+    let bookToDelete
+    let idBook
     beforeEach(async () => {
       // given
       authorData = factory.createAuthorData()
       authorToDelete = await authorRepository.create(authorData)
       id = authorToDelete.id
+      bookData = factory.createBookData()
+      bookToDelete.authorId = id
+      bookToDelete = await bookRepository.create(bookData)
+      idBook = bookToDelete.id
+      bookId = author
       // when
       await authorRepository.delete(id)
     })
     // then
     it('should return no author', () => {
       expect(Author.findOne({ where: { id } })).to.be.eventually.null
+    })
+
+    it('should return no book', () => {
+      expect(Book.findOne({ where: { idBook } })).to.be.eventually.null
     })
   })
 })
