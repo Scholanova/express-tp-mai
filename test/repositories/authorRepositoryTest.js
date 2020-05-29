@@ -1,9 +1,11 @@
 const { expect, factory } = require('../testHelper')
 
 const authorRepository = require('../../lib/repositories/authorRepository')
+const bookRepository = require('../../lib/repositories/bookRepository')
 const models = require('../../lib/models')
 const { ResourceNotFoundError } = require('../../lib/errors')
 const Author = models.Author
+const Book = models.Book
 
 describe('authorRepository', () => {
 
@@ -167,4 +169,52 @@ describe('authorRepository', () => {
       })
     })
   })
+
+  describe('delete', () => {
+
+    let createdAuthor
+    let authorData
+    let bookData
+    let createBook
+
+    context('when there is an authors in the repository with no books', () => {
+      beforeEach(async () => {
+        // given
+        authorData = factory.createAuthorData()
+        createdAuthor = await authorRepository.create(authorData)
+
+        // when
+        await authorRepository.delete(createdAuthor.id)
+      })
+
+      it('should return a resource not found', () => {
+        // then
+        return expect(authorRepository.get(createdAuthor.id)).to.eventually.be.rejectedWith(ResourceNotFoundError)
+      })
+    })
+
+    context('when there is an authors in the repository with books', () => {
+      beforeEach(async () => {
+        // given
+        authorData = factory.createAuthorData()
+        createdAuthor = await authorRepository.create(authorData)
+        bookData = factory.createBookData({ authorId: createdAuthor.id })
+        createBook = await bookRepository.create(bookData)
+
+        // when
+        await authorRepository.delete(createdAuthor.id)
+      })
+
+      it('should return a resource not found for the author', () => {
+        // then
+        return expect(authorRepository.get(createdAuthor.id)).to.eventually.be.rejectedWith(ResourceNotFoundError)
+      })
+      it('should return a resource not found for the books', () => {
+        // then
+        return expect(bookRepository.get(createBook.id)).to.eventually.be.rejectedWith(ResourceNotFoundError)
+      })
+    })
+  })
+
+  
 })
