@@ -47,8 +47,8 @@ describe('authorRouter', () => {
       beforeEach(async () => {
         // given
         author = factory.createAuthor()
+ author = factory.createAuthor({pseudo: null})
         authorRepository.listAll.resolves([author])
-
         // when
         response = await request(app).get('/authors')
       })
@@ -254,6 +254,7 @@ describe('authorRouter', () => {
       })
     })
   })
+  
 
   describe('new - POST', () => {
 
@@ -288,10 +289,10 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post('/authors/new')
-          .type('form')
-          .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': authorEmail, 'language': authorLanguage })
-          .redirects(0)
+         .post('/authors/new')
+        .type('form')
+        .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': authorEmail, 'language': authorLanguage })
+        .redirects(0)
       })
 
       it('should call the service with author data', () => {
@@ -342,11 +343,10 @@ describe('authorRouter', () => {
         authorLanguage = 'french'
 
         // when
-        response = await request(app)
-          .post('/authors/new')
-          .type('form')
-          .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': undefined, 'language': authorLanguage })
-          .redirects(0)
+        .post('/authors/new')
+        .type('form')
+        .send({ 'name': authorName, 'pseudo': authorPseudo, 'email': undefined, 'language': authorLanguage })
+        .redirects(0)
       })
 
       it('should call the service with author data', () => {
@@ -397,9 +397,9 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post('/authors/filter')
-          .type('form')
-          .send({ 'language': filterLanguage })
+         .post('/authors/filter')
+        .type('form')
+        .send({ 'language': filterLanguage })
       })
 
       it('should call the service with language to filter upon', () => {
@@ -433,8 +433,8 @@ describe('authorRouter', () => {
         // when
         response = await request(app)
           .post('/authors/filter')
-          .type('form')
-          .send({ 'language': filterLanguage })
+        .type('form')
+        .send({ 'language': filterLanguage })
       })
 
       it('should call the service with language to filter upon', () => {
@@ -472,9 +472,9 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post('/authors/filter')
-          .type('form')
-          .send({ 'language': filterLanguage })
+                .post('/authors/filter')
+        .type('form')
+        .send({ 'language': filterLanguage })
       })
 
       it('should call the service with language to filter upon', () => {
@@ -593,10 +593,10 @@ describe('authorRouter', () => {
 
         // when
         response = await request(app)
-          .post(`/authors/${authorId}/books/new`)
-          .type('form')
-          .send({ 'title': bookTitle })
-          .redirects(0)
+            .post(`/authors/${authorId}/books/new`)
+        .type('form')
+        .send({ 'title': bookTitle })
+        .redirects(0)
       })
 
       it('should call the service with author id and book data', () => {
@@ -655,9 +655,9 @@ describe('authorRouter', () => {
         // when
         response = await request(app)
           .post(`/authors/${authorId}/books/new`)
-          .type('form')
-          .send({ 'title': bookTitle })
-          .redirects(0)
+        .type('form')
+        .send({ 'title': bookTitle })
+        .redirects(0)
       })
 
       it('should call the service with author data', () => {
