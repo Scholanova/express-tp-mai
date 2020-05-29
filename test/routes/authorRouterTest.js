@@ -64,47 +64,48 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`${author.name} (${author.pseudo})`)
       })
     })
-
+    
     context('when there are pseudos in the repository', () => {
-
+      
       let author
       beforeEach(async () => {
         // given
         author = factory.createAuthor()
         authorRepository.listAll.resolves([author])
-
+        
         // when
         response = await request(app).get('/authors')
       })
-
+      
       it('should succeed with a status 200', () => {
         // then
         expect(response).to.have.status(200)
       })
-
+      
       it('should return an html list with author info inside', () => {
         // then
         expect(response).to.be.html
         expect(response.text).to.contain(`(${author.pseudo})`)
       })
     })
+    
     context('when there are pseudos in the repository', () => {
-
+      
       let author
       beforeEach(async () => {
         // given
         author = factory.createAuthor({pseudo: null})
         authorRepository.listAll.resolves([author])
-
+        
         // when
         response = await request(app).get('/authors')
       })
-
+      
       it('should succeed with a status 200', () => {
         // then
         expect(response).to.have.status(200)
       })
-
+      
       it('should return an html list with author info inside but not pseudo', () => {
         // then
         expect(response).to.be.html
@@ -731,6 +732,45 @@ describe('authorRouter', () => {
         expect(response.text).to.contain(`Create a new book for ${authorName}`)
         expect(response.text).to.contain('&#34;title&#34; is required')
         expect(response.text).to.contain(bookTitle)
+      })
+    })
+  })
+  
+  describe('delete Book - DELETE', () => {
+    
+    let response
+
+    beforeEach(() => {
+      sinon.stub(bookRepository, 'delete')
+    })
+    
+    context('when the book exist', () => {
+      
+      let authorId, bookId, book
+      
+      beforeEach(async () => {
+        // given
+        authorId = '213'
+        bookId = '123'
+        book = factory.createBook({ id: bookId, author: authorId })
+        
+        bookRepository.delete.resolves()
+        
+        // when
+        response = await request(app)
+        .delete(`/authors/${authorId}/books/${bookId}`)
+        .type('form')
+        .redirects(0)
+      })
+      
+      it('should call the service with book id', () => {
+        // then
+        expect(bookRepository.delete).to.have.been.calledWith(bookId)
+      })
+
+      it('should succeed with a status 204', () => {
+        // then
+        expect(response).to.have.status(204)
       })
     })
   })
