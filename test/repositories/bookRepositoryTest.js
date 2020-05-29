@@ -77,9 +77,34 @@ describe('bookRepository', () => {
         createBookPromise = bookRepository.create(bookData)
       })
 
-      // then
+      // then 
       it('should return a book with the right properties', () => {
         return expect(createBookPromise).to.eventually.be.rejectedWith(SequelizeForeignKeyConstraintError)
+      })
+    })
+  })
+
+  describe('delete', () => {
+    let bookData
+    let existingAuthor
+
+    context('when there is a book to delete', () => {
+
+      beforeEach(async () => {
+        //given
+        existingAuthor = await authorRepository.create(factory.createAuthorData())
+        bookData = factory.createBookData({ authorId: existingAuthor.id })
+
+        // when
+        createdBook = await bookRepository.create(bookData)
+
+        // when
+        await bookRepository.delete(createdBook.id)
+      })
+
+      it('should return a resource not found', () => {
+        // then
+        return expect(bookRepository.get(createdBook.id)).to.eventually.be.rejectedWith(ResourceNotFoundError)
       })
     })
   })
