@@ -1,7 +1,7 @@
 module.exports = {
   development: {
     username: 'postgres',
-    password: 'postgres',
+    password: 'admin',
     database: 'scholanova_express_mai_development',
     host: '127.0.0.1',
     dialect: 'postgres',
@@ -9,7 +9,7 @@ module.exports = {
   },
   test: {
     username: 'postgres',
-    password: 'postgres',
+    password: 'admin',
     database: 'scholanova_express_mai_test',
     host: '127.0.0.1',
     dialect: 'postgres',
