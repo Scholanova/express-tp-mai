@@ -72,10 +72,6 @@ describe('bookService', () => {
       })
     })
     
-    
-    
-    
-    
     context('when the book title already exists for this author', () => {
       
       let authorId = 123
@@ -140,11 +136,6 @@ describe('bookService', () => {
     })
     
     
-    
-    
-    
-    
-    
     context('when the book title is empty', () => {
       
       beforeEach(() => {
@@ -205,5 +196,82 @@ describe('bookService', () => {
         .with.deep.property('details', expectedErrorDetails)
       })
     })
+    
+    context('when author have 4 books', () => {
+      
+      let authorId
+      let existingBookData
+      
+      beforeEach(() => {
+        // given
+        authorId = 543
+        bookData = factory.createBookData({ authorId })
+        existingBookData = Array.from({length: 4}).map((_,i) => (
+          { id:i, authorId , title: `title ${i}` }
+        ))
+
+        book = new Book(bookData)
+        bookRepository.create.resolves(book)
+        
+        sinon.stub(bookRepository, 'listForAuthor')
+        bookRepository.listForAuthor.resolves(existingBookData.map( e => factory.createBook(e)))
+                
+        // when
+        bookCreationPromise = bookService.create(bookData)
+      })
+        
+      it('should call the book Repository ', async () => {
+        // then
+        await bookCreationPromise.catch(() => {})
+        expect(bookRepository.create).to.have.been.calledWith(bookData)
+      })
+      it('should resolve with the created book from reprository', () => {
+        return expect(bookCreationPromise).to.eventually.equal(book)
+      })
+    })
+        
+    context('when author have already 5 books', () => {
+      
+      let authorId
+      let existingBookData
+      
+      beforeEach(() => {
+        // given
+        authorId = 543
+        bookData = factory.createBookData({ authorId })
+        existingBookData = Array.from({length: 5}).map( (_,i) => (
+          { id: i , authorId: authorId , title: `title ${i}` }
+        ))
+        
+        book = new Book(bookData)
+        bookRepository.create.resolves(book)
+        
+        sinon.stub(bookRepository, 'listForAuthor')
+        bookRepository.listForAuthor.resolves(existingBookData.map(e => factory.createBook(e)))        
+        
+        // when
+        bookCreationPromise = bookService.create(bookData)
+      })
+      
+      it('should not call the book Repository ', async () => {
+        // then
+        await bookCreationPromise.catch(() => {})
+        expect(bookRepository.create).to.not.have.been.calledWith(bookData)
+      })
+      
+      it('should reject with a ValidationError error already five books for the author', () => {
+        // then
+        const expectedErrorDetails = [{
+          message: 'Author cannot have more than 5 books',
+          path: ["title"],
+          type: 'array.max',
+          context: { label: 'value', limit: 5, value: [...existingBookData, bookData] }
+        }]
+        return expect(bookCreationPromise)
+        .to.eventually.be.rejectedWith(Joi.ValidationError)
+        .with.deep.property('details', expectedErrorDetails)
+      })
+    })
   })
 })
+    
