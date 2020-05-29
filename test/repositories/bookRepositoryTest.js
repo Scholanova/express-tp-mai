@@ -136,4 +136,27 @@ describe('bookRepository', () => {
       })
     })
   })
+
+  describe('delete', () => {
+
+    let bookId, book
+
+    beforeEach(async () => {
+        // given
+        bookId = 123
+        authorId = 456
+        author = factory.createAuthor({ id: authorId })
+        await author.save()
+        book = factory.createBook({ id: bookId, authorId: authorId })
+        await book.save()
+
+        // when
+        await bookRepository.delete(bookId)
+    })
+
+    it('should delete book from repository', () => {
+        // then
+        return expect(Book.findOne({ where: { id: bookId }})).to.eventually.be.null
+    })
+  })
 })
