@@ -43,11 +43,15 @@ describe('authorRouter', () => {
 
     context('when there are authors in the repository', () => {
 
-      let author
+      let authorWithPseudo
+      let authorWithoutPseudo
       beforeEach(async () => {
         // given
-        author = factory.createAuthor()
-        authorRepository.listAll.resolves([author])
+        authorWithPseudo = factory.createAuthor({pseudo: 'Pseudo'})
+        authorWithoutPseudo = factory.createAuthor()
+        authorWithoutPseudo.pseudo = undefined
+
+        authorRepository.listAll.resolves([authorWithPseudo, authorWithoutPseudo])
 
         // when
         response = await request(app).get('/authors')
@@ -61,7 +65,8 @@ describe('authorRouter', () => {
       it('should return an html list with author info inside', () => {
         // then
         expect(response).to.be.html
-        expect(response.text).to.contain(`${author.name} (${author.pseudo})`)
+        expect(response.text).to.contain(`${authorWithPseudo.name} (${authorWithPseudo.pseudo})\n`)
+        expect(response.text).to.contain(`${authorWithoutPseudo.name}\n`)
       })
     })
   })
