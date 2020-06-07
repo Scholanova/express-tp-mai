@@ -1,6 +1,7 @@
 const { expect, factory } = require('../testHelper')
 
 const authorRepository = require('../../lib/repositories/authorRepository')
+const bookRepository = require('../../lib/repositories/bookRepository')
 const models = require('../../lib/models')
 const { ResourceNotFoundError } = require('../../lib/errors')
 const Author = models.Author
@@ -59,6 +60,42 @@ describe('authorRepository', () => {
       const retrievedAuthorValue = retrievedAuthor.get()
 
       expect(createdAuthorValue).to.deep.equal(retrievedAuthorValue)
+    })
+  })
+
+  describe('delete', () => {
+
+    let existingAuthor
+    let existingAuthorBook
+    let resultPromise
+
+    beforeEach(async () => {
+      // given
+      const authorData = factory.createAuthorData()
+      existingAuthor = await authorRepository.create(authorData)
+      const bookData = factory.createBookData({ authorId: existingAuthor.id })
+      existingAuthorBook = await bookRepository.create(bookData)
+
+      // when
+      resultPromise = authorRepository.delete(existingAuthor.id)
+    })
+
+    // then
+    it('should succeed', () => {
+      const expectedNumberOfAuthorDeleted = 1
+      return expect(resultPromise).to.eventually.equal(expectedNumberOfAuthorDeleted)
+    })
+
+    it('should delete the author', () => {
+      const getAuthorPromise = authorRepository.get(existingAuthor.id)
+
+      return expect(getAuthorPromise).to.eventually.be.rejectedWith(ResourceNotFoundError)
+    })
+
+    it('should delete the author’s book', () => {
+      const getBookPromise = bookRepository.get(existingAuthorBook.id)
+
+      return expect(getBookPromise).to.eventually.be.rejectedWith(ResourceNotFoundError)
     })
   })
 

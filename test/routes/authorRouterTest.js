@@ -47,7 +47,7 @@ describe('authorRouter', () => {
       let authorWithoutPseudo
       beforeEach(async () => {
         // given
-        authorWithPseudo = factory.createAuthor({pseudo: 'Pseudo'})
+        authorWithPseudo = factory.createAuthor({ pseudo: 'Pseudo' })
         authorWithoutPseudo = factory.createAuthor()
         authorWithoutPseudo.pseudo = undefined
 
@@ -256,6 +256,39 @@ describe('authorRouter', () => {
       })
     })
 
+  })
+
+  describe('delete', () => {
+
+    let authorId
+    let response
+
+    beforeEach(() => {
+      sinon.stub(authorRepository, 'delete')
+    })
+
+    context('when deletion succeeds', () => {
+
+      beforeEach(async () => {
+        // given
+        authorId = '123'
+        authorRepository.delete.resolves(1)
+
+        // when
+        response = await request(app).delete(`/authors/${authorId}`)
+      })
+
+      it('should call the author repository with id', () => {
+        // then
+        expect(authorRepository.delete).to.have.been.calledWith(authorId)
+      })
+
+      it('should succeed with a status 204', () => {
+        // then
+        expect(response).to.have.status(204)
+        expect(response.text).to.be.empty
+      })
+    })
   })
 
   describe('new - POST', () => {
